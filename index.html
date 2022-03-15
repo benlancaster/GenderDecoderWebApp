@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Gender Decoder</title>
+<script defer src="main_cde78cd63919e345f466.js"></script></head>
+<body>
+<div class="container">
+    <h1 class="display-4 border-bottom">Gender-coded language</h1>
+    <p>Enter your job description either as text or upload a PDF or DOCX file to identify gender-coded language</p>
+    <form id="text">
+        <fieldset class="border-top">
+            <legend class="display-6">Copy pasta</legend>
+            <p>
+                <label class="form-label" for="jd-as-text">Job description</label>
+                <textarea name="text" id="jd-as-text" class="form-control" rows="10"></textarea>
+                <span class="form-text">Paste the contents of your job ad. It's sent off to the remote and parsed</span>
+            </p>
+        <p><input type="submit" value="Decode" class="btn btn-primary"></p>
+        </fieldset>
+    </form>
+    <form id="file">
+        <fieldset class="border-top">
+            <legend class="display-6">Uploady McUploadface</legend>
+            <p>
+                <label>PDF or DOCX file: <input type="file" name="input" class="form-control" accept="application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document" /></label>
+            </p>
+            <p><input type="submit" value="Upload &amp; decode" class="btn btn-primary"></p>
+        </fieldset>
+    </form>
+    <article id="result"></article>
+    <article id="formatted"></article>
+    <pre></pre>
+</div>
+</body>
+</html>
