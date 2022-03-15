@@ -1,117 +1,37 @@
-<html>
+<!doctype html>
+<html lang="en">
 <head>
     <meta charset="utf-8">
-    <style type="text/css">
-        .masc {
-            background-color: lightcoral;
-            border-bottom: 1px solid red;
-        }
-        .fem {
-            background-color: lightgreen;
-            border-bottom: 1px solid green
-        }
-    </style>
-</head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Gender Decoder</title>
+<script defer src="main_cde78cd63919e345f466.js"></script></head>
 <body>
-<form id="text">
-    <fieldset>
-        <legend>Copy pasta</legend>
-        <p><textarea name="text" cols="100" rows="50"></textarea></p>
-    <p><input type="submit" value="Decode"></p>
-    </fieldset>
-</form>
-<form id="file">
-    <fieldset>
-        <legend>Uploady McUploadface</legend>
-        <label>File: <input type="file" name="input" /></label>
-        <p><input type="submit" value="Upload &amp; decode"></p>
-    </fieldset>
-</form>
-<article id="result"></article>
-<article id="formatted"></article>
-<pre></pre>
-<script>
-    const textForm = document.querySelector('form#text');
-    const fileForm = document.querySelector('form#file');
-    const output = document.querySelector('pre')
-    const CONFIG = {
-        parse: "https://genderdecoder.herokuapp.com/parse",
-        upload: "https://genderdecoder.herokuapp.com/upload"
-    }
-    fileForm.onsubmit = async (e) => {
-        e.preventDefault()
-
-        const response = await fetch(CONFIG.upload, {
-            method: "POST",
-            made: "cors",
-            body: new FormData(fileForm)
-        })
-
-        handleResponse(response)
-    }
-
-    textForm.onsubmit = async (e) => {
-        e.preventDefault()
-
-        const response = await fetch(CONFIG.parse, {
-            method: "POST",
-            mode: "cors",
-            body: new FormData(textForm)
-        })
-
-        handleResponse(response)
-    }
-
-    async function handleResponse(response) {
-        const responseObj = await response.json()
-
-        updateStats(responseObj)
-        writeOutFindings(responseObj)
-        output.innerText = JSON.stringify(responseObj)
-    }
-
-    function updateStats(o) {
-        const result = document.querySelector('#result')
-        result.innerHTML = ""
-        const stats = document.createElement('p')
-        stats.innerText = `Processing took ${o.elapsedTime}ms.`
-
-        const sentiment = document.createElement('p')
-        sentiment.innerText = `Overall gender-coded sentiment is ${o.overallSentiment}.`
-
-        const totalWords = o.totalMasculine + o.totalFeminine
-        const percentMasc = (o.totalMasculine / totalWords) * 100
-        const percentFem = (o.totalFeminine / totalWords) * 100
-        const analysis = document.createElement('p')
-        analysis.innerHTML = `Of ${o.wordsAnalyzed} word(s), ${totalWords} were found to be gender-coded, with a bias of
-            ${percentMasc}% masculine, ${percentFem}% feminine`
-
-        result.append(sentiment, analysis, stats)
-    }
-
-    function writeOutFindings(o) {
-        const findings = document.querySelector('#formatted')
-        findings.innerText = ""
-        const input = o.input
-
-        let cursor = 0
-
-        for (let i = 0; i < o.words.length; i++) {
-            const word = o.words[i]
-            const node = document.createElement('span')
-            node.innerText = input.substr(cursor, word.start - cursor)
-            const s = document.createElement('span')
-            s.innerText = input.substr(word.start, word.value.length)
-            if (word.coding === "Feminine") {
-                s.className = "fem"
-            } else {
-                s.className = "masc"
-            }
-
-            findings.append(node, s)
-            cursor = word.start + word.value.length
-        }
-    }
-</script>
+<div class="container">
+    <h1 class="display-4 border-bottom">Gender-coded language</h1>
+    <p>Enter your job description either as text or upload a PDF or DOCX file to identify gender-coded language</p>
+    <form id="text">
+        <fieldset class="border-top">
+            <legend class="display-6">Copy pasta</legend>
+            <p>
+                <label class="form-label" for="jd-as-text">Job description</label>
+                <textarea name="text" id="jd-as-text" class="form-control" rows="10"></textarea>
+                <span class="form-text">Paste the contents of your job ad. It's sent off to the remote and parsed</span>
+            </p>
+        <p><input type="submit" value="Decode" class="btn btn-primary"></p>
+        </fieldset>
+    </form>
+    <form id="file">
+        <fieldset class="border-top">
+            <legend class="display-6">Uploady McUploadface</legend>
+            <p>
+                <label>PDF or DOCX file: <input type="file" name="input" class="form-control" accept="application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document" /></label>
+            </p>
+            <p><input type="submit" value="Upload &amp; decode" class="btn btn-primary"></p>
+        </fieldset>
+    </form>
+    <article id="result"></article>
+    <article id="formatted"></article>
+    <pre></pre>
+</div>
 </body>
 </html>
